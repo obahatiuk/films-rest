@@ -26,7 +26,4 @@ public class Film {
 	@XmlElement
 	private String description;
 	
-	public String getTitle() {
-		return title;
-	}
 }

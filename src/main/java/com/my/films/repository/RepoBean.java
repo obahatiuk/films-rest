@@ -22,7 +22,6 @@ public class RepoBean implements RepoLocal {
 	
 	private EntityManager entityManager;
 	
-	//@Produces
 	@PostConstruct
 	public void createEntityManager() {
 		entityManager = Persistence
