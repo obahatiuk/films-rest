@@ -13,6 +13,7 @@ import javax.xml.bind.annotation.XmlElement;
 public class Film {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@XmlElement
 	private Long id;
 	
 	@NotNull
@@ -25,5 +26,22 @@ public class Film {
 	@NotNull
 	@XmlElement
 	private String description;
+	
+	public Long getId() {
+		return id;
+	}
+	
+	public String getIdTitle() {
+		return title;
+	}
+	
+	public String getDirector() {
+		return director;
+	}
+	
+	public String getDescription() {
+		return description;
+	}
+	
 	
 }

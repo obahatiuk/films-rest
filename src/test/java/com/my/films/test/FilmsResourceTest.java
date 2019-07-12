@@ -18,13 +18,12 @@ import com.my.films.rest.FilmsApplication;
 public class FilmsResourceTest extends JerseyTest {
 	@Override
 	protected Application configure() {
-	return new FilmsApplication();
+		return new FilmsApplication();
 	}
 	
 	@Test
-	public void getFilms() {
+	public void testGetFilms() {
 		Response response = target("/films").request().get();
 		assertNotNull(response);
-		
 	}
 }
