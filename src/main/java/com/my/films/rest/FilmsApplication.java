@@ -5,6 +5,7 @@ import org.glassfish.jersey.internal.inject.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
 
 import com.my.films.repository.RepoBean;
+import com.my.films.rest.PersistenceExceptionMapper;
 
 //import com.my.films.repository.EntityDao;
 //import com.my.films.repository.BaseEntityDao;
@@ -22,5 +23,7 @@ public class FilmsApplication extends ResourceConfig {
                 .to(RepoBean.class);
             }
         });
+		
+		register(PersistenceExceptionMapper.class);
 	}
 }
