@@ -20,6 +20,7 @@ public class Film {
 	@XmlElement
 	private String title;
 	
+	@NotNull
 	@XmlElement
 	private String director;
 	
@@ -42,6 +43,21 @@ public class Film {
 	public String getDescription() {
 		return description;
 	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 	
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	
+	public void setDirector(String director) {
+		this.director = director;
+	}
+	
+	public void setDescription(String description) {
+		this.description = description;
+	}
 	
 }

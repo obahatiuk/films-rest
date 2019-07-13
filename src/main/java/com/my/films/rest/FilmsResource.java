@@ -37,29 +37,39 @@ public class FilmsResource {
 	@GET
 	@Produces("application/json")
 	public Response getFilms() {
-		//try {
-			List<Film> films = filmRepo.findAllFilms();//Future<List<Film>>
-			GenericEntity<List<Film>> entity = new GenericEntity<List<Film>>(films) {};//.get()
-			return Response.status(200).entity(entity).build();
-//		} catch(Exception e) {
-//			return Response.status(500).entity(e.getMessage()).build();
-//		}
+		List<Film> films = filmRepo.findAllFilms();
+		GenericEntity<List<Film>> entity = new GenericEntity<List<Film>>(films) {};
+		return Response.status(200).entity(entity).build();
 	}
 	
 	@POST
 	@Consumes("application/json")
 	@Produces("application/json")
 	public Response createFilm(Film film, @Context UriInfo uriInfo) {
+		if(film.getId() != null)
+			return Response.status(422).entity("film's id must be null as it is auto-generated.").build();
+		
 		film = filmRepo.createFilm(film);
-		//URI createdURI = uriInfo.getAbsolutePathBuilder().path(film.getId().toString()).build();
-		return Response.status(201).entity(film).build();//.location(createdURI)S
+		
+		URI createdURI = uriInfo.getAbsolutePathBuilder().path(film.getId().toString()).build();
+		return Response.status(201).location(createdURI).entity(film).build();
 	}
 	
 	@PUT
 	@Consumes("application/json")
 	@Produces("application/json")
-	public Response updateFilm(Film film, @Context UriInfo uriInfo) {
+	@Path("/{id : \\d+}")
+	public Response updateFilm(Film film, @PathParam("id") @Min(1) Long id, @Context UriInfo uriInfo) {
+		boolean doesIdsMatch = film.getId() == null || id == film.getId();
+		if(!doesIdsMatch) 
+			return Response.status(422).entity("Mantioned in path id and entity's id doesn't match").build();
+		
+		boolean doesEntityExist = filmRepo.findFilm(id) != null;
+		if(!doesEntityExist)
+			return Response.status(404).entity("Entity not found").build();
+		
 		film = filmRepo.updateFilm(film);
+		
 		URI createdURI = uriInfo.getAbsolutePathBuilder().path(film.getId().toString()).build();
 		return Response.status(200).entity(film).build();
 	}
@@ -70,8 +80,6 @@ public class FilmsResource {
 	public Response getFilm(@PathParam("id") @Min(1) Long id) {
 		Film film = filmRepo.findFilm(id);
 		
-		if(film == null)
-			return Response.status(404).build();
 		return Response.status(200).entity(film).build();
 	}
 	
@@ -80,6 +88,10 @@ public class FilmsResource {
 	@Path("/{id : \\d+}")
 	@Produces("application/json")
 	public Response deleteFilm(@PathParam("id") @Min(1) Long id) {
+		boolean doesEntityExist = filmRepo.findFilm(id) != null;
+		if(!doesEntityExist)
+			return Response.status(404).entity("Entity not found").build();
+		
 		filmRepo.deleteFilm(id);
 		
 		return Response.status(204).build();
