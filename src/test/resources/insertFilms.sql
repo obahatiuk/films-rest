@@ -1,0 +1,1 @@
+INSERT INTO filmstest.film(description, director, title) VALUES ('test description 1', 'director 1', 'title 1'), ('test description 2', 'director 2', 'title 2'), ('test description 3', 'director 3', 'title 3');
